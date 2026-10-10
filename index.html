@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d0a">
+<meta name="description" content="MeloSync — discover music for every mood.">
+<title>MeloSync — Music for Every Mood</title>
+<style>
+:root{--bg:#080d0a;--panel:#111a14;--panel2:#19231c;--green:#1ed760;--text:#f4f7f4;--muted:#a0ada3;--line:#26332a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(ellipse at 80% -10%,#173a26 0,transparent 35%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px clamp(16px,4vw,42px);background:rgba(8,13,10,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08)}
+.logo{display:flex;align-items:center;gap:10px;font-weight:850;font-size:24px;letter-spacing:-1px;color:var(--green)}
+.logo-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:var(--green);color:#071109;font-size:22px}
+.logo span{color:var(--text)}
+.header-tag{color:var(--muted);font-size:11px;letter-spacing:1.8px;font-weight:700}
+main{width:min(1050px,100%);margin:auto;padding:30px 18px 120px}
+.hero{padding:18px 0 22px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--green);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
+.eyebrow:before{content:"";width:20px;height:2px;background:var(--green)}
+h1{font-size:clamp(34px,7vw,60px);line-height:1.04;letter-spacing:-2px;margin:15px 0 12px;max-width:720px}
+h1 span{color:var(--green)}
+.sub{color:var(--muted);font-size:15px;line-height:1.65;margin:0;max-width:600px}
+.search-wrap{display:flex;gap:8px;margin:22px 0 14px;padding:7px;background:#141c16;border:1px solid #344239;border-radius:16px;box-shadow:0 12px 35px #0004}
+.search-icon{align-self:center;padding-left:8px;color:var(--muted);font-size:19px}
+#searchInput{width:100%;min-width:0;background:transparent;border:0;outline:none;color:var(--text);padding:12px 6px;font-size:15px}
+#searchInput::placeholder{color:#849087}
+.primary,.secondary,.tab,.play,.close-btn{border:0;font-weight:750;transition:transform .15s,background .15s}
+.primary{background:var(--green);color:#061109;border-radius:11px;padding:12px 17px;white-space:nowrap}
+.primary:hover{background:#5bf08b;transform:translateY(-1px)}
+.helper{color:var(--muted);font-size:12px;line-height:1.5;margin:0 2px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:25px 0 15px}
+.tab{padding:10px 15px;border-radius:30px;background:#19221b;color:#d7e0d9;border:1px solid #2b382e}
+.tab.active{background:var(--green);color:#071109;border-color:var(--green)}
+.mode-note{background:#101812;border:1px solid var(--line);border-radius:12px;padding:13px 15px;color:#b5c1b8;font-size:13px;line-height:1.6}
+.player-panel{display:none;margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:14px;overflow:hidden}
+.player-panel.show{display:block}
+.player-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.player-head strong{font-size:14px}
+.close-btn{border:1px solid #354239;background:#202a22;color:#e9f0eb;border-radius:9px;padding:7px 10px}
+#youtubeFrame{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000}
+.audio-box{display:none;padding:18px 4px}
+.audio-box.show{display:block}
+.audio-title{font-size:19px;font-weight:800;margin:0 0 6px}
+.audio-sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+#audioPlayer{width:100%;margin:8px 0;accent-color:var(--green)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:31px 0 14px}
+h2{font-size:21px;letter-spacing:-.4px;margin:0}
+.section-caption{color:var(--muted);font-size:12px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{position:relative;min-width:0;background:linear-gradient(150deg,#17231a,#101612);border:1px solid #26342a;border-radius:16px;padding:12px;overflow:hidden;transition:transform .18s,border-color .18s}
+.card:hover{transform:translateY(-3px);border-color:#4c6a54}
+.art{height:clamp(105px,25vw,165px);display:flex;align-items:center;justify-content:center;border-radius:11px;margin-bottom:13px;font-size:clamp(34px,7vw,53px);position:relative;overflow:hidden}
+.art:after{content:"";position:absolute;width:110px;height:110px;border:1px solid #ffffff24;border-radius:50%;right:-24px;bottom:-46px;box-shadow:0 0 0 15px #ffffff08,0 0 0 30px #ffffff06}
+.art1{background:linear-gradient(135deg,#124b32,#6bce86)}
+.art2{background:linear-gradient(135deg,#513071,#c65b93)}
+.art3{background:linear-gradient(135deg,#14365a,#3caaa4)}
+.art4{background:linear-gradient(135deg,#704123,#d8a24b)}
+.art5{background:linear-gradient(135deg,#26364b,#8d9dc8)}
+.art6{background:linear-gradient(135deg,#4c2b2b,#d46c6c)}
+.song{font-weight:800;font-size:15px;overflow-wrap:anywhere}
+.artist{font-size:12px;color:var(--muted);margin:5px 0 13px}
+.play{width:100%;padding:10px;border-radius:10px;background:#26332a;color:#f4f7f4}
+.play:hover{background:var(--green);color:#071109}
+.empty{display:none;padding:25px;text-align:center;color:var(--muted);border:1px dashed #354239;border-radius:14px;grid-column:1/-1}
+.status{margin-top:24px;padding:14px 15px;border-radius:12px;background:#111b14;border:1px solid #27382b;color:#b6c6b9;font-size:13px;line-height:1.6}
+.status strong{color:var(--green)}
+.small-title{font-size:14px;font-weight:800;margin:0 0 7px;color:#e8f0e9}
+footer{position:fixed;bottom:0;left:0;right:0;z-index:8;background:rgba(8,13,10,.94);backdrop-filter:blur(15px);border-top:1px solid #26332a;padding:12px 16px;text-align:center;color:#9eaaa1;font-size:11px}
+footer b{color:var(--green)}
+@media(min-width:650px){main{padding-top:42px}.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{padding-top:20px}.search-wrap{max-width:750px}}
+@media(min-width:900px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:420px){header{padding:13px 14px}.logo{font-size:21px}.header-tag{font-size:9px;letter-spacing:1px}main{padding-left:14px;padding-right:14px}.search-wrap{gap:3px}.primary{padding:11px 12px}.card{padding:9px}.art{height:100px}.tabs{gap:6px}.tab{font-size:13px;padding:9px 12px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><div class="logo-mark">♫</div><div>Melo<span>Sync</span></div></div>
+  <div class="header-tag">YOUR MUSIC SPACE</div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="eyebrow">Your sound. Your mood.</div>
+    <h1>Find the music<br>that <span>moves you.</span></h1>
+    <p class="sub">Search for your favourites, explore a new mood, and make every moment sound better.</p>
+  </section>
+
+  <form class="search-wrap" id="searchForm">
+    <span class="search-icon" aria-hidden="true">⌕</span>
+    <input id="searchInput" placeholder="Search songs, artists, or moods..." aria-label="Search songs, artists, or moods">
+    <button class="primary" type="submit">Search</button>
+  </form>
+  <p class="helper">YouTube searches open through the official YouTube service. Connect to the internet to search.</p>
+
+  <div class="tabs" role="tablist" aria-label="Playback mode">
+    <button class="tab active" type="button" data-mode="youtube" role="tab" aria-selected="true">▶ YouTube</button>
+    <button class="tab" type="button" data-mode="audio" role="tab" aria-selected="false">♫ Audio-only</button>
+  </div>
+
+  <div class="mode-note" id="modeNote">Search opens YouTube's official results page. Live search inside MeloSync requires a YouTube Data API integration.</div>
+
+  <section class="player-panel" id="playerPanel" aria-label="Music player">
+    <div class="player-head">
+      <strong id="playerHeading">Now playing</strong>
+      <button class="close-btn" type="button" id="closePlayer">Close ✕</button>
+    </div>
+    <iframe id="youtubeFrame" title="YouTube music player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <div class="audio-box" id="audioBox">
+      <p class="audio-title" id="audioTitle">Audio-only player</p>
+      <p class="audio-sub">Plays an audio file you have permission to use.</p>
+      <audio id="audioPlayer" controls preload="none">Your browser does not support audio playback.</audio>
+      <p class="helper">Audio not starting? Add an authorised direct audio-file URL in the AUDIO_TRACKS list in the code.</p>
+    </div>
+  </section>
+
+  <div class="section-head">
+    <h2 id="listTitle">Explore your mood</h2>
+    <span class="section-caption" id="resultCount">6 collections</span>
+  </div>
+
+  <div class="cards" id="cards">
+    <article class="card" data-search="romantic love hindi arijit singh soft songs">
+      <div class="art art1">💚</div><div class="song">Romantic Mood</div><div class="artist">Love & soft songs</div>
+      <button class="play" type="button" data-query="Arijit Singh romantic songs">Explore music ↗</button>
+    </article>
+    <article class="card" data-search="bangla bengali bangladesh music">
+      <div class="art art2">🌺</div><div class="song">Bangla Vibes</div><div class="artist">Bangla music</div>
+      <button class="play" type="button" data-query="popular Bangla songs">Explore music ↗</button>
+    </article>
+    <article class="card" data-search="lofi chill relaxing focus study night">
+      <div class="art art3">🌙</div><div class="song">Late Night</div><div class="artist">Lo-fi & chill</div>
+      <button class="play" type="button" data-query="lofi chill music">Explore music ↗</button>
+    </article>
+    <article class="card" data-search="english pop hits international upbeat">
+      <div class="art art4">✨</div><div class="song">Pop Energy</div><div class="artist">English pop</div>
+      <button class="play" type="button" data-query="popular English pop songs">Explore music ↗</button>
+    </article>
+    <article class="card" data-search="peaceful acoustic calm relaxing instrumental">
+      <div class="art art5">☁️</div><div class="song">Slow Moments</div><div class="artist">Acoustic & calm</div>
+      <button class="play" type="button" data-query="peaceful acoustic music">Explore music ↗</button>
+    </article>
+    <article class="card" data-search="dance workout energetic party">
+      <div class="art art6">⚡</div><div class="song">Feel the Beat</div><div class="artist">Dance & energy</div>
+      <button class="play" type="button" data-query="dance party hits">Explore music ↗</button>
+    </article>
+    <div class="empty" id="emptyState">No matching collections. Try another search.</div>
+  </div>
+
+  <div class="status" id="status" role="status" aria-live="polite"><strong>Welcome to MeloSync.</strong> Choose a collection or search for a song to get started.</div>
+</main>
+
+<footer><b>♫ MeloSync</b> · Made for music lovers</footer>
+
+<script>
+"use strict";
+
+/*
+ AUDIO-ONLY SETUP:
+ Add direct audio URLs only for tracks you own or are authorised to use.
+ Example:
+ const AUDIO_TRACKS = [
+   { title: "My authorised track", artist: "Artist", url: "https://example.com/track.mp3" }
+ ];
+ Leave empty until you have a permitted audio URL.
+*/
+const AUDIO_TRACKS = [];
+
+let currentMode = "youtube";
+let previousQuery = "";
+const input = document.getElementById("searchInput");
+const cards = [...document.querySelectorAll(".card[data-search]")];
+const note = document.getElementById("modeNote");
+const status = document.getElementById("status");
+const playerPanel = document.getElementById("playerPanel");
+const youtubeFrame = document.getElementById("youtubeFrame");
+const audioBox = document.getElementById("audioBox");
+const audioPlayer = document.getElementById("audioPlayer");
+const audioTitle = document.getElementById("audioTitle");
+const playerHeading = document.getElementById("playerHeading");
+const emptyState = document.getElementById("emptyState");
+
+function setStatus(message) {
+  status.textContent = message;
+}
+function stopPlayers() {
+  youtubeFrame.src = "";
+  audioPlayer.pause();
+  audioPlayer.removeAttribute("src");
+  audioPlayer.load();
+}
+function closePlayer() {
+  stopPlayers();
+  playerPanel.classList.remove("show");
+  audioBox.classList.remove("show");
+  youtubeFrame.style.display = "block";
+}
+function showYouTubeSearch(query) {
+  const clean = query.trim();
+  if (!clean) {
+    setStatus("Type a song, artist, or mood into the search box first.");
+    input.focus();
+    return;
+  }
+  previousQuery = clean;
+  playerPanel.classList.add("show");
+  audioBox.classList.remove("show");
+  youtubeFrame.style.display = "none";
+  playerHeading.textContent = "Search YouTube: " + clean;
+  addFallbackLink(clean);
+  setStatus("Your search is ready. Select “Search on YouTube” to see official results and play a song there. Direct live YouTube search inside this page requires a YouTube Data API integration.");
+}
+function addFallbackLink(query) {
+  let old = document.getElementById("youtubeFallback");
+  if (old) old.remove();
+  const link = document.createElement("a");
+  link.id = "youtubeFallback";
+  link.href = "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
+  link.target = "_blank";
+  link.rel = "noopener noreferrer";
+  link.textContent = "Search on YouTube ↗";
+  link.style.cssText = "display:inline-block;margin-top:10px;color:#1ed760;font-weight:700;font-size:14px";
+  playerHeading.insertAdjacentElement("afterend", link);
+}
+function showAudioMode() {
+  const query = input.value.trim();
+  if (!AUDIO_TRACKS.length) {
+    closePlayer();
+    note.textContent = "Audio-only plays separately authorised audio files, not audio extracted from YouTube. No audio tracks have been added yet.";
+    setStatus("Audio-only is ready for setup. Add a permitted direct audio-file URL to the AUDIO_TRACKS list in this file to enable playback.");
+    return;
+  }
+  const filtered = AUDIO_TRACKS.filter(track =>
+    (track.title + " " + track.artist).toLowerCase().includes(query.toLowerCase())
+  );
+  renderAudioTracks(filtered.length ? filtered : AUDIO_TRACKS);
+}
+function renderAudioTracks(tracks) {
+  playerPanel.classList.add("show");
+  youtubeFrame.style.display = "none";
+  audioBox.classList.add("show");
+  playerHeading.textContent = "Audio-only player";
+  let old = document.getElementById("audioTrackList");
+  if (old) old.remove();
+  const list = document.createElement("div");
+  list.id = "audioTrackList";
+  list.style.cssText = "display:grid;gap:8px;margin-top:12px";
+  tracks.forEach(track => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "play";
+    button.textContent = "▶ " + track.title + " — " + track.artist;
+    button.addEventListener("click", () => {
+      audioPlayer.src = track.url;
+      audioTitle.textContent = track.title;
+      audioPlayer.play().then(() => setStatus("Playing: " + track.title)).catch(() => setStatus("Playback could not start. Check the audio URL and your browser permissions."));
+    });
+    list.appendChild(button);
+  });
+  audioBox.appendChild(list);
+  setStatus("Showing " + tracks.length + " authorised audio track(s). Select one to play.");
+}
+document.querySelectorAll(".tab").forEach(tab => {
+  tab.addEventListener("click", () => {
+    currentMode = tab.dataset.mode;
+    document.querySelectorAll(".tab").forEach(item => {
+      const active = item === tab;
+      item.classList.toggle("active", active);
+      item.setAttribute("aria-selected", String(active));
+    });
+    if (currentMode === "youtube") {
+      note.textContent = "Search for a song using YouTube's official search page. Live search inside MeloSync needs a YouTube Data API integration.";
+      setStatus("YouTube mode selected. Search for a song or choose a collection.");
+      if (input.value.trim()) showYouTubeSearch(input.value);
+    } else {
+      note.textContent = "Audio-only mode uses separately authorised audio files. It does not extract or convert audio from YouTube videos.";
+      showAudioMode();
+    }
+  });
+});
+document.getElementById("searchForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const query = input.value.trim();
+  if (!query) {
+    cards.forEach(card => card.style.display = "");
+    document.getElementById("listTitle").textContent = "Explore your mood";
+    document.getElementById("resultCount").textContent = cards.length + " collections";
+    emptyState.style.display = "none";
+    setStatus("Showing all music collections. Type something to search.");
+    return;
+  }
+  const q = query.toLowerCase();
+  let shown = 0;
+  cards.forEach(card => {
+    const match = (card.innerText + " " + card.dataset.search).toLowerCase().includes(q);
+    card.style.display = match ? "" : "none";
+    if (match) shown++;
+  });
+  emptyState.style.display = shown ? "none" : "block";
+  document.getElementById("listTitle").textContent = "Your search";
+  document.getElementById("resultCount").textContent = shown + " collection" + (shown === 1 ? "" : "s");
+  if (currentMode === "youtube") {
+    showYouTubeSearch(query);
+  } else {
+    showAudioMode();
+    if (!AUDIO_TRACKS.length) setStatus("Collections filtered. To play audio-only, add a permitted audio URL to AUDIO_TRACKS in the code.");
+  }
+});
+document.querySelectorAll("[data-query]").forEach(button => {
+  button.addEventListener("click", () => {
+    input.value = button.dataset.query;
+    if (currentMode === "youtube") {
+      showYouTubeSearch(button.dataset.query);
+    } else {
+      showAudioMode();
+    }
+    playerPanel.scrollIntoView({behavior:"smooth",block:"nearest"});
+  });
+});
+document.getElementById("closePlayer").addEventListener("click", () => {
+  closePlayer();
+  const fallback = document.getElementById("youtubeFallback");
+  if (fallback) fallback.remove();
+  setStatus("Player closed. Choose another collection or search for music.");
+});
+audioPlayer.addEventListener("error", () => {
+  setStatus("This audio file could not be played. Check that the URL points directly to an authorised audio file and allows browser playback.");
+});
+</script>
+</body>
+</html>
