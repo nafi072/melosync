@@ -1,336 +1,743 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080d0a">
-<meta name="description" content="MeloSync — discover music for every mood.">
-<title>MeloSync — Music for Every Mood</title>
+<meta name="theme-color" content="#101010">
+<title>MeloSync — Music for Every Moment</title>
+
 <style>
-:root{--bg:#080d0a;--panel:#111a14;--panel2:#19231c;--green:#1ed760;--text:#f4f7f4;--muted:#a0ada3;--line:#26332a}
-*{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;background:radial-gradient(ellipse at 80% -10%,#173a26 0,transparent 35%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;min-height:100vh}
-button,input{font:inherit}
-button{cursor:pointer}
-header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:16px clamp(16px,4vw,42px);background:rgba(8,13,10,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.08)}
-.logo{display:flex;align-items:center;gap:10px;font-weight:850;font-size:24px;letter-spacing:-1px;color:var(--green)}
-.logo-mark{display:grid;place-items:center;width:36px;height:36px;border-radius:12px;background:var(--green);color:#071109;font-size:22px}
-.logo span{color:var(--text)}
-.header-tag{color:var(--muted);font-size:11px;letter-spacing:1.8px;font-weight:700}
-main{width:min(1050px,100%);margin:auto;padding:30px 18px 120px}
-.hero{padding:18px 0 22px}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;color:var(--green);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase}
-.eyebrow:before{content:"";width:20px;height:2px;background:var(--green)}
-h1{font-size:clamp(34px,7vw,60px);line-height:1.04;letter-spacing:-2px;margin:15px 0 12px;max-width:720px}
-h1 span{color:var(--green)}
-.sub{color:var(--muted);font-size:15px;line-height:1.65;margin:0;max-width:600px}
-.search-wrap{display:flex;gap:8px;margin:22px 0 14px;padding:7px;background:#141c16;border:1px solid #344239;border-radius:16px;box-shadow:0 12px 35px #0004}
-.search-icon{align-self:center;padding-left:8px;color:var(--muted);font-size:19px}
-#searchInput{width:100%;min-width:0;background:transparent;border:0;outline:none;color:var(--text);padding:12px 6px;font-size:15px}
-#searchInput::placeholder{color:#849087}
-.primary,.secondary,.tab,.play,.close-btn{border:0;font-weight:750;transition:transform .15s,background .15s}
-.primary{background:var(--green);color:#061109;border-radius:11px;padding:12px 17px;white-space:nowrap}
-.primary:hover{background:#5bf08b;transform:translateY(-1px)}
-.helper{color:var(--muted);font-size:12px;line-height:1.5;margin:0 2px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:25px 0 15px}
-.tab{padding:10px 15px;border-radius:30px;background:#19221b;color:#d7e0d9;border:1px solid #2b382e}
-.tab.active{background:var(--green);color:#071109;border-color:var(--green)}
-.mode-note{background:#101812;border:1px solid var(--line);border-radius:12px;padding:13px 15px;color:#b5c1b8;font-size:13px;line-height:1.6}
-.player-panel{display:none;margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:14px;overflow:hidden}
-.player-panel.show{display:block}
-.player-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
-.player-head strong{font-size:14px}
-.close-btn{border:1px solid #354239;background:#202a22;color:#e9f0eb;border-radius:9px;padding:7px 10px}
-#youtubeFrame{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000}
-.audio-box{display:none;padding:18px 4px}
-.audio-box.show{display:block}
-.audio-title{font-size:19px;font-weight:800;margin:0 0 6px}
-.audio-sub{color:var(--muted);font-size:13px;margin:0 0 16px}
-#audioPlayer{width:100%;margin:8px 0;accent-color:var(--green)}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:31px 0 14px}
-h2{font-size:21px;letter-spacing:-.4px;margin:0}
-.section-caption{color:var(--muted);font-size:12px}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card{position:relative;min-width:0;background:linear-gradient(150deg,#17231a,#101612);border:1px solid #26342a;border-radius:16px;padding:12px;overflow:hidden;transition:transform .18s,border-color .18s}
-.card:hover{transform:translateY(-3px);border-color:#4c6a54}
-.art{height:clamp(105px,25vw,165px);display:flex;align-items:center;justify-content:center;border-radius:11px;margin-bottom:13px;font-size:clamp(34px,7vw,53px);position:relative;overflow:hidden}
-.art:after{content:"";position:absolute;width:110px;height:110px;border:1px solid #ffffff24;border-radius:50%;right:-24px;bottom:-46px;box-shadow:0 0 0 15px #ffffff08,0 0 0 30px #ffffff06}
-.art1{background:linear-gradient(135deg,#124b32,#6bce86)}
-.art2{background:linear-gradient(135deg,#513071,#c65b93)}
-.art3{background:linear-gradient(135deg,#14365a,#3caaa4)}
-.art4{background:linear-gradient(135deg,#704123,#d8a24b)}
-.art5{background:linear-gradient(135deg,#26364b,#8d9dc8)}
-.art6{background:linear-gradient(135deg,#4c2b2b,#d46c6c)}
-.song{font-weight:800;font-size:15px;overflow-wrap:anywhere}
-.artist{font-size:12px;color:var(--muted);margin:5px 0 13px}
-.play{width:100%;padding:10px;border-radius:10px;background:#26332a;color:#f4f7f4}
-.play:hover{background:var(--green);color:#071109}
-.empty{display:none;padding:25px;text-align:center;color:var(--muted);border:1px dashed #354239;border-radius:14px;grid-column:1/-1}
-.status{margin-top:24px;padding:14px 15px;border-radius:12px;background:#111b14;border:1px solid #27382b;color:#b6c6b9;font-size:13px;line-height:1.6}
-.status strong{color:var(--green)}
-.small-title{font-size:14px;font-weight:800;margin:0 0 7px;color:#e8f0e9}
-footer{position:fixed;bottom:0;left:0;right:0;z-index:8;background:rgba(8,13,10,.94);backdrop-filter:blur(15px);border-top:1px solid #26332a;padding:12px 16px;text-align:center;color:#9eaaa1;font-size:11px}
-footer b{color:var(--green)}
-@media(min-width:650px){main{padding-top:42px}.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.hero{padding-top:20px}.search-wrap{max-width:750px}}
-@media(min-width:900px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:420px){header{padding:13px 14px}.logo{font-size:21px}.header-tag{font-size:9px;letter-spacing:1px}main{padding-left:14px;padding-right:14px}.search-wrap{gap:3px}.primary{padding:11px 12px}.card{padding:9px}.art{height:100px}.tabs{gap:6px}.tab{font-size:13px;padding:9px 12px}}
-@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+:root {
+  --bg: #101010;
+  --panel: #181818;
+  --card: #222222;
+  --text: #ffffff;
+  --muted: #b3b3b3;
+  --green: #1ed760;
+  --border: #333333;
+}
+body.light {
+  --bg: #f5f5f5;
+  --panel: #ffffff;
+  --card: #eaeaea;
+  --text: #171717;
+  --muted: #555555;
+  --green: #138c42;
+  --border: #dddddd;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  transition: background .25s, color .25s;
+}
+button, input, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button { cursor: pointer; }
+a { color: inherit; text-decoration: none; }
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 18px 5%;
+  background: var(--panel);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid var(--border);
+}
+.brand { font-size: 27px; font-weight: 800; letter-spacing: -1px; }
+.brand span { color: var(--green); }
+.nav, .actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.nav a, .nav button, .actions button {
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  padding: 9px 10px;
+  border-radius: 20px;
+}
+.nav a:hover, .nav button:hover, .actions button:hover {
+  background: var(--card);
+}
+.pill {
+  background: var(--green) !important;
+  color: #061b0d !important;
+  border: none;
+  border-radius: 25px;
+  padding: 11px 18px;
+  font-weight: 700;
+}
+.secondary {
+  border: 1px solid var(--border) !important;
+  border-radius: 25px;
+  padding: 10px 15px;
+  color: var(--text);
+  background: transparent;
+}
+.container { width: min(1150px, 90%); margin: auto; }
+.hero {
+  margin: 28px auto;
+  padding: 65px 35px;
+  border-radius: 22px;
+  background: linear-gradient(125deg, #123b27, #102018 60%, #202020);
+}
+body.light .hero {
+  background: linear-gradient(125deg, #c8f4d6, #e3f7e9 60%, #eeeeee);
+}
+.hero h1 { font-size: clamp(35px, 6vw, 65px); margin: 0 0 18px; }
+.hero p { color: var(--muted); font-size: 17px; line-height: 1.7; max-width: 620px; }
+.section { padding: 25px 0; }
+.section h2 { margin-bottom: 10px; }
+.muted { color: var(--muted); line-height: 1.7; }
+.searchbar { display: flex; gap: 10px; margin: 22px 0; }
+.searchbar input, .field {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  outline-color: var(--green);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 17px;
+}
+.music-card {
+  background: var(--panel);
+  border-radius: 13px;
+  padding: 17px;
+  border: 1px solid var(--border);
+  transition: transform .2s, background .2s;
+}
+.music-card:hover { transform: translateY(-4px); background: var(--card); }
+.art {
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  font-size: 52px;
+  margin-bottom: 14px;
+  background: linear-gradient(135deg, #175b37, #252525);
+}
+.music-card h3 { margin: 8px 0; }
+.music-card p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+.card-button {
+  border: 0;
+  border-radius: 22px;
+  padding: 10px 15px;
+  background: var(--green);
+  color: #062010;
+  font-weight: 700;
+}
+.tabs { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0; }
+.tab {
+  padding: 10px 16px;
+  border-radius: 22px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  background: var(--panel);
+}
+.tab.active { background: var(--green); color: #062010; }
+.player-box {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  padding: 20px;
+  border-radius: 14px;
+}
+.player-box iframe { width: 100%; border: 0; border-radius: 10px; }
+.player-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.player-row input { flex: 1; min-width: 200px; }
+.empty { color: var(--muted); padding: 15px 0; }
+.support {
+  margin-top: 45px;
+  padding: 45px 0 25px;
+  background: var(--panel);
+  border-top: 1px solid var(--border);
+}
+.support-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 35px;
+}
+.support h2, .support h3 { margin-top: 0; }
+.support p { color: var(--muted); line-height: 1.8; }
+.socials { display: flex; gap: 12px; flex-wrap: wrap; }
+.socials a {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 10px 15px;
+}
+.socials a:hover { border-color: var(--green); }
+.footer-bottom {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+}
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0,0,0,.75);
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  overflow-y: auto;
+}
+.modal.show { display: flex; }
+.modal-box {
+  width: min(420px, 100%);
+  background: var(--panel);
+  color: var(--text);
+  padding: 28px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  position: relative;
+}
+.modal-box h2 { margin-top: 0; }
+.modal-box .field { margin: 8px 0 14px; }
+.modal-close {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  font-size: 25px;
+  background: none;
+  border: 0;
+  color: var(--text);
+}
+.form-note { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.notice { color: var(--green); min-height: 20px; font-size: 14px; }
+.hidden { display: none !important; }
+@media (max-width: 850px) {
+  .topbar { align-items: flex-start; flex-direction: column; }
+  .support-grid { grid-template-columns: 1fr 1fr; }
+  .support-grid > :first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 520px) {
+  .nav, .actions { gap: 5px; }
+  .hero { padding: 40px 22px; }
+  .searchbar { flex-direction: column; }
+  .support-grid { grid-template-columns: 1fr; }
+  .support-grid > :first-child { grid-column: auto; }
+  .container { width: 92%; }
+}
 </style>
 </head>
+
 <body>
-<header>
-  <div class="logo"><div class="logo-mark">♫</div><div>Melo<span>Sync</span></div></div>
-  <div class="header-tag">YOUR MUSIC SPACE</div>
+<header class="topbar">
+  <a class="brand" href="#home">Melo<span>Sync</span></a>
+
+  <nav class="nav" aria-label="Main navigation">
+    <a href="#home" data-i18n="home">Home</a>
+    <a href="#discover" data-i18n="discover">Discover</a>
+    <a href="#player" data-i18n="player">Music Player</a>
+    <a href="#support" data-i18n="support">Support</a>
+  </nav>
+
+  <div class="actions">
+    <button class="secondary" id="themeBtn" type="button">☀️ White</button>
+    <button class="secondary" id="langBtn" type="button">বাংলা</button>
+    <button class="secondary" id="loginBtn" type="button" data-i18n="login">Log In</button>
+    <button class="pill" id="signupBtn" type="button" data-i18n="signup">Sign Up</button>
+  </div>
 </header>
 
 <main>
-  <section class="hero">
-    <div class="eyebrow">Your sound. Your mood.</div>
-    <h1>Find the music<br>that <span>moves you.</span></h1>
-    <p class="sub">Search for your favourites, explore a new mood, and make every moment sound better.</p>
+  <section class="container hero" id="home">
+    <h1 data-i18n="heroTitle">Your Music. Your Moments.</h1>
+    <p data-i18n="heroText">
+      Discover music for every mood, explore new sounds, and make every
+      moment your own with MeloSync.
+    </p>
+    <a href="#discover" class="pill" data-i18n="explore">Explore Music</a>
   </section>
 
-  <form class="search-wrap" id="searchForm">
-    <span class="search-icon" aria-hidden="true">⌕</span>
-    <input id="searchInput" placeholder="Search songs, artists, or moods..." aria-label="Search songs, artists, or moods">
-    <button class="primary" type="submit">Search</button>
-  </form>
-  <p class="helper">YouTube searches open through the official YouTube service. Connect to the internet to search.</p>
+  <section class="container section" id="discover">
+    <h2 data-i18n="discoverTitle">Discover Your Sound</h2>
+    <p class="muted" data-i18n="discoverText">
+      Explore collections and search YouTube for the music you love.
+    </p>
 
-  <div class="tabs" role="tablist" aria-label="Playback mode">
-    <button class="tab active" type="button" data-mode="youtube" role="tab" aria-selected="true">▶ YouTube</button>
-    <button class="tab" type="button" data-mode="audio" role="tab" aria-selected="false">♫ Audio-only</button>
-  </div>
-
-  <div class="mode-note" id="modeNote">Search opens YouTube's official results page. Live search inside MeloSync requires a YouTube Data API integration.</div>
-
-  <section class="player-panel" id="playerPanel" aria-label="Music player">
-    <div class="player-head">
-      <strong id="playerHeading">Now playing</strong>
-      <button class="close-btn" type="button" id="closePlayer">Close ✕</button>
+    <div class="searchbar">
+      <input id="searchInput" type="search"
+        placeholder="Search moods, collections or music..."
+        data-i18n-placeholder="searchPlaceholder"
+        aria-label="Search music">
+      <button class="pill" id="searchBtn" type="button"
+        data-i18n="search">Search</button>
     </div>
-    <iframe id="youtubeFrame" title="YouTube music player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <div class="audio-box" id="audioBox">
-      <p class="audio-title" id="audioTitle">Audio-only player</p>
-      <p class="audio-sub">Plays an audio file you have permission to use.</p>
-      <audio id="audioPlayer" controls preload="none">Your browser does not support audio playback.</audio>
-      <p class="helper">Audio not starting? Add an authorised direct audio-file URL in the AUDIO_TRACKS list in the code.</p>
+
+    <div class="tabs">
+      <button class="tab active" data-category="all" data-i18n="all">All</button>
+      <button class="tab" data-category="chill" data-i18n="chill">Chill</button>
+      <button class="tab" data-category="focus" data-i18n="focus">Focus</button>
+      <button class="tab" data-category="workout" data-i18n="workout">Workout</button>
+      <button class="tab" data-category="podcasts" data-i18n="podcasts">Podcasts</button>
     </div>
+
+    <div class="grid" id="musicGrid">
+      <article class="music-card" data-category="chill" data-search="chill relaxing calm">
+        <div class="art">🌙</div>
+        <h3 data-i18n="chillTitle">Chill Moments</h3>
+        <p data-i18n="chillDesc">Relax and enjoy a peaceful soundscape.</p>
+        <button class="card-button" data-query="chill relaxing music"
+          data-i18n="listen">Find Music</button>
+      </article>
+
+      <article class="music-card" data-category="focus" data-search="focus study concentration">
+        <div class="art">📚</div>
+        <h3 data-i18n="focusTitle">Deep Focus</h3>
+        <p data-i18n="focusDesc">Sounds to accompany study and work.</p>
+        <button class="card-button" data-query="study focus music"
+          data-i18n="listen">Find Music</button>
+      </article>
+
+      <article class="music-card" data-category="workout" data-search="workout gym energy">
+        <div class="art">⚡</div>
+        <h3 data-i18n="workoutTitle">High Energy</h3>
+        <p data-i18n="workoutDesc">Bring energy to your next activity.</p>
+        <button class="card-button" data-query="workout energetic music"
+          data-i18n="listen">Find Music</button>
+      </article>
+
+      <article class="music-card" data-category="podcasts" data-search="podcasts stories conversations">
+        <div class="art">🎙️</div>
+        <h3 data-i18n="podcastTitle">Podcasts & Stories</h3>
+        <p data-i18n="podcastDesc">Discover conversations and new ideas.</p>
+        <button class="card-button" data-query="interesting podcasts"
+          data-i18n="listen">Find Music</button>
+      </article>
+
+      <article class="music-card" data-category="chill" data-search="romantic love acoustic">
+        <div class="art">💚</div>
+        <h3 data-i18n="loveTitle">Love & Acoustic</h3>
+        <p data-i18n="loveDesc">Gentle melodies for meaningful moments.</p>
+        <button class="card-button" data-query="romantic acoustic music"
+          data-i18n="listen">Find Music</button>
+      </article>
+
+      <article class="music-card" data-category="workout" data-search="party dance pop">
+        <div class="art">🎉</div>
+        <h3 data-i18n="partyTitle">Party Vibes</h3>
+        <p data-i18n="partyDesc">Discover upbeat music and dance sounds.</p>
+        <button class="card-button" data-query="party dance music"
+          data-i18n="listen">Find Music</button>
+      </article>
+    </div>
+    <p class="empty hidden" id="noResults" data-i18n="noResults">
+      No matching collections found.
+    </p>
   </section>
 
-  <div class="section-head">
-    <h2 id="listTitle">Explore your mood</h2>
-    <span class="section-caption" id="resultCount">6 collections</span>
-  </div>
+  <section class="container section" id="player">
+    <h2 data-i18n="playerTitle">Music Player</h2>
+    <p class="muted" data-i18n="playerText">
+      Search YouTube or paste a YouTube video link to play it here.
+    </p>
 
-  <div class="cards" id="cards">
-    <article class="card" data-search="romantic love hindi arijit singh soft songs">
-      <div class="art art1">💚</div><div class="song">Romantic Mood</div><div class="artist">Love & soft songs</div>
-      <button class="play" type="button" data-query="Arijit Singh romantic songs">Explore music ↗</button>
-    </article>
-    <article class="card" data-search="bangla bengali bangladesh music">
-      <div class="art art2">🌺</div><div class="song">Bangla Vibes</div><div class="artist">Bangla music</div>
-      <button class="play" type="button" data-query="popular Bangla songs">Explore music ↗</button>
-    </article>
-    <article class="card" data-search="lofi chill relaxing focus study night">
-      <div class="art art3">🌙</div><div class="song">Late Night</div><div class="artist">Lo-fi & chill</div>
-      <button class="play" type="button" data-query="lofi chill music">Explore music ↗</button>
-    </article>
-    <article class="card" data-search="english pop hits international upbeat">
-      <div class="art art4">✨</div><div class="song">Pop Energy</div><div class="artist">English pop</div>
-      <button class="play" type="button" data-query="popular English pop songs">Explore music ↗</button>
-    </article>
-    <article class="card" data-search="peaceful acoustic calm relaxing instrumental">
-      <div class="art art5">☁️</div><div class="song">Slow Moments</div><div class="artist">Acoustic & calm</div>
-      <button class="play" type="button" data-query="peaceful acoustic music">Explore music ↗</button>
-    </article>
-    <article class="card" data-search="dance workout energetic party">
-      <div class="art art6">⚡</div><div class="song">Feel the Beat</div><div class="artist">Dance & energy</div>
-      <button class="play" type="button" data-query="dance party hits">Explore music ↗</button>
-    </article>
-    <div class="empty" id="emptyState">No matching collections. Try another search.</div>
-  </div>
-
-  <div class="status" id="status" role="status" aria-live="polite"><strong>Welcome to MeloSync.</strong> Choose a collection or search for a song to get started.</div>
+    <div class="player-box">
+      <form class="player-row" id="youtubeForm">
+        <input class="field" id="youtubeInput"
+          placeholder="Enter a song name or YouTube URL"
+          data-i18n-placeholder="youtubePlaceholder"
+          aria-label="Song name or YouTube URL">
+        <button class="pill" type="submit" data-i18n="play">
+          Play / Search
+        </button>
+      </form>
+      <p class="form-note" data-i18n="playerNote">
+        A song search opens YouTube results. A supported video link can play
+        in the embedded player below.
+      </p>
+      <div id="youtubePlayer" class="hidden">
+        <iframe id="youtubeFrame" height="315"
+          title="YouTube music player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
 </main>
 
-<footer><b>♫ MeloSync</b> · Made for music lovers</footer>
+<footer class="support" id="support">
+  <div class="container">
+    <div class="support-grid">
+      <section>
+        <h2>Melo<span style="color:var(--green)">Sync</span></h2>
+        <h3 data-i18n="aboutTitle">About Us</h3>
+        <p data-i18n="aboutText">
+          MeloSync helps you discover music and podcasts that fit your day.
+          Explore sounds for studying, travelling, exercising, celebrating,
+          or simply unwinding. Search for your favourites, discover new
+          artists and stories, and find something that matches your mood.
+          Make every moment more memorable with MeloSync.
+        </p>
+      </section>
+
+      <section>
+        <h3 data-i18n="supportTitle">Support</h3>
+        <p data-i18n="supportText">
+          Need help or have a suggestion? Get in touch with our team by email.
+        </p>
+        <a href="mailto:nafi072@aol.com" class="pill"
+          data-i18n="contactUs">Contact Us</a>
+        <p><a href="mailto:nafi072@aol.com">nafi072@aol.com</a></p>
+      </section>
+
+      <section>
+        <h3 data-i18n="hqTitle">MeloSync HQ</h3>
+        <p>
+          House 31, Road 2/1<br>
+          Dhap Lalkuthilen<br>
+          Rangpur Sadar-5400<br>
+          Bangladesh
+        </p>
+        <h3 data-i18n="followUs">Follow Us</h3>
+        <div class="socials">
+          <a href="https://www.facebook.com/" target="_blank"
+             rel="noopener noreferrer">Facebook ↗</a>
+          <a href="https://www.instagram.com/" target="_blank"
+             rel="noopener noreferrer">Instagram ↗</a>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      © <span id="year"></span> MeloSync.
+      <span data-i18n="footerText">Made for music lovers.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Login modal -->
+<div class="modal" id="loginModal" role="dialog"
+  aria-modal="true" aria-labelledby="loginHeading">
+  <div class="modal-box">
+    <button class="modal-close" data-close="loginModal"
+      aria-label="Close">&times;</button>
+    <h2 id="loginHeading" data-i18n="loginTitle">Welcome Back</h2>
+    <p class="muted" data-i18n="loginIntro">Log in to MeloSync.</p>
+
+    <form id="loginForm">
+      <label for="loginEmail" data-i18n="emailLabel">Email</label>
+      <input class="field" id="loginEmail" type="email"
+        autocomplete="email" required>
+      <label for="loginPassword" data-i18n="passwordLabel">Password</label>
+      <input class="field" id="loginPassword" type="password"
+        autocomplete="current-password" minlength="8" required>
+      <button class="pill" type="submit" data-i18n="login">Log In</button>
+    </form>
+    <p class="notice" id="loginNotice" aria-live="polite"></p>
+    <p class="form-note" data-i18n="demoNote">
+      Demo only: authentication is not connected yet.
+    </p>
+    <button class="secondary" id="switchToSignup" type="button"
+      data-i18n="needAccount">Need an account? Sign Up</button>
+  </div>
+</div>
+
+<!-- Sign Up modal -->
+<div class="modal" id="signupModal" role="dialog"
+  aria-modal="true" aria-labelledby="signupHeading">
+  <div class="modal-box">
+    <button class="modal-close" data-close="signupModal"
+      aria-label="Close">&times;</button>
+    <h2 id="signupHeading" data-i18n="signupTitle">Create Your Account</h2>
+    <p class="muted" data-i18n="signupIntro">Join the MeloSync community.</p>
+
+    <form id="signupForm">
+      <label for="signupName" data-i18n="nameLabel">Your Name</label>
+      <input class="field" id="signupName" autocomplete="name" required>
+      <label for="signupEmail" data-i18n="emailLabel">Email</label>
+      <input class="field" id="signupEmail" type="email"
+        autocomplete="email" required>
+      <label for="signupPassword" data-i18n="passwordLabel">Password</label>
+      <input class="field" id="signupPassword" type="password"
+        autocomplete="new-password" minlength="8" required>
+      <button class="pill" type="submit" data-i18n="signup">Sign Up</button>
+    </form>
+    <p class="notice" id="signupNotice" aria-live="polite"></p>
+    <p class="form-note" data-i18n="demoNote">
+      Demo only: authentication is not connected yet.
+    </p>
+    <button class="secondary" id="switchToLogin" type="button"
+      data-i18n="haveAccount">Already have an account? Log In</button>
+  </div>
+</div>
 
 <script>
-"use strict";
-
-/*
- AUDIO-ONLY SETUP:
- Add direct audio URLs only for tracks you own or are authorised to use.
- Example:
- const AUDIO_TRACKS = [
-   { title: "My authorised track", artist: "Artist", url: "https://example.com/track.mp3" }
- ];
- Leave empty until you have a permitted audio URL.
-*/
-const AUDIO_TRACKS = [];
-
-let currentMode = "youtube";
-let previousQuery = "";
-const input = document.getElementById("searchInput");
-const cards = [...document.querySelectorAll(".card[data-search]")];
-const note = document.getElementById("modeNote");
-const status = document.getElementById("status");
-const playerPanel = document.getElementById("playerPanel");
-const youtubeFrame = document.getElementById("youtubeFrame");
-const audioBox = document.getElementById("audioBox");
-const audioPlayer = document.getElementById("audioPlayer");
-const audioTitle = document.getElementById("audioTitle");
-const playerHeading = document.getElementById("playerHeading");
-const emptyState = document.getElementById("emptyState");
-
-function setStatus(message) {
-  status.textContent = message;
-}
-function stopPlayers() {
-  youtubeFrame.src = "";
-  audioPlayer.pause();
-  audioPlayer.removeAttribute("src");
-  audioPlayer.load();
-}
-function closePlayer() {
-  stopPlayers();
-  playerPanel.classList.remove("show");
-  audioBox.classList.remove("show");
-  youtubeFrame.style.display = "block";
-}
-function showYouTubeSearch(query) {
-  const clean = query.trim();
-  if (!clean) {
-    setStatus("Type a song, artist, or mood into the search box first.");
-    input.focus();
-    return;
+const translations = {
+  en: {
+    home:"Home", discover:"Discover", player:"Music Player", support:"Support",
+    login:"Log In", signup:"Sign Up", heroTitle:"Your Music. Your Moments.",
+    heroText:"Discover music for every mood, explore new sounds, and make every moment your own with MeloSync.",
+    explore:"Explore Music", discoverTitle:"Discover Your Sound",
+    discoverText:"Explore collections and search YouTube for the music you love.",
+    searchPlaceholder:"Search moods, collections or music...", search:"Search",
+    all:"All", chill:"Chill", focus:"Focus", workout:"Workout", podcasts:"Podcasts",
+    chillTitle:"Chill Moments", chillDesc:"Relax and enjoy a peaceful soundscape.",
+    focusTitle:"Deep Focus", focusDesc:"Sounds to accompany study and work.",
+    workoutTitle:"High Energy", workoutDesc:"Bring energy to your next activity.",
+    podcastTitle:"Podcasts & Stories", podcastDesc:"Discover conversations and new ideas.",
+    loveTitle:"Love & Acoustic", loveDesc:"Gentle melodies for meaningful moments.",
+    partyTitle:"Party Vibes", partyDesc:"Discover upbeat music and dance sounds.",
+    listen:"Find Music", noResults:"No matching collections found.",
+    playerTitle:"Music Player",
+    playerText:"Search YouTube or paste a YouTube video link to play it here.",
+    youtubePlaceholder:"Enter a song name or YouTube URL", play:"Play / Search",
+    playerNote:"A song search opens YouTube results. A supported video link can play in the embedded player below.",
+    aboutTitle:"About Us",
+    aboutText:"MeloSync helps you discover music and podcasts that fit your day. Explore sounds for studying, travelling, exercising, celebrating, or simply unwinding. Search for your favourites, discover new artists and stories, and find something that matches your mood. Make every moment more memorable with MeloSync.",
+    supportTitle:"Support",
+    supportText:"Need help or have a suggestion? Get in touch with our team by email.",
+    contactUs:"Contact Us", hqTitle:"MeloSync HQ", followUs:"Follow Us",
+    footerText:"Made for music lovers.", loginTitle:"Welcome Back",
+    loginIntro:"Log in to MeloSync.", signupTitle:"Create Your Account",
+    signupIntro:"Join the MeloSync community.", emailLabel:"Email",
+    passwordLabel:"Password", nameLabel:"Your Name",
+    demoNote:"Demo only: authentication is not connected yet.",
+    needAccount:"Need an account? Sign Up",
+    haveAccount:"Already have an account? Log In",
+    themeWhite:"☀️ White", themeDark:"🌙 Dark",
+    noSong:"Enter a song name or a YouTube video link.",
+    invalidUrl:"That YouTube link could not be recognised. Try a standard video link.",
+    loginDemo:"Login is not connected yet. Add a secure authentication service to enable it.",
+    signupDemo:"Sign Up is not connected yet. No account has been created.",
+    searchEmpty:"Enter something to search for."
+  },
+  bn: {
+    home:"হোম", discover:"খুঁজুন", player:"মিউজিক প্লেয়ার", support:"সাপোর্ট",
+    login:"লগইন", signup:"সাইন আপ", heroTitle:"তোমার গান, তোমার মুহূর্ত।",
+    heroText:"প্রতিটি মুডের জন্য গান খুঁজে নাও, নতুন সুর আবিষ্কার করো, আর MeloSync-এর সঙ্গে মুহূর্তগুলো নিজের মতো করে উপভোগ করো।",
+    explore:"গান খুঁজুন", discoverTitle:"তোমার পছন্দের সুর",
+    discoverText:"কালেকশন দেখো এবং পছন্দের গান YouTube-এ খুঁজে নাও।",
+    searchPlaceholder:"মুড, কালেকশন বা গান খুঁজুন...", search:"সার্চ",
+    all:"সব", chill:"রিল্যাক্স", focus:"মনোযোগ", workout:"ওয়ার্কআউট", podcasts:"পডকাস্ট",
+    chillTitle:"শান্তির মুহূর্ত", chillDesc:"আরামদায়ক সুরে সময় কাটাও।",
+    focusTitle:"মনোযোগের সুর", focusDesc:"পড়াশোনা ও কাজের সময়ের জন্য।",
+    workoutTitle:"এনার্জি", workoutDesc:"তোমার কাজ বা ব্যায়ামে উদ্যম আনো।",
+    podcastTitle:"পডকাস্ট ও গল্প", podcastDesc:"নতুন আলোচনা ও আইডিয়া আবিষ্কার করো।",
+    loveTitle:"ভালোবাসা ও অ্যাকুস্টিক", loveDesc:"বিশেষ মুহূর্তের জন্য কোমল সুর।",
+    partyTitle:"পার্টি ভাইবস", partyDesc:"উচ্ছল গান ও নাচের সুর খুঁজে নাও।",
+    listen:"গান খুঁজুন", noResults:"মিল আছে এমন কোনো কালেকশন পাওয়া যায়নি।",
+    playerTitle:"মিউজিক প্লেয়ার",
+    playerText:"YouTube-এ গান সার্চ করো অথবা ভিডিও লিংক এখানে পেস্ট করো।",
+    youtubePlaceholder:"গানের নাম বা YouTube লিংক দিন", play:"চালান / সার্চ",
+    playerNote:"গানের নাম সার্চ করলে YouTube ফলাফল খুলবে। সমর্থিত ভিডিও লিংক নিচে চালানো যাবে।",
+    aboutTitle:"আমাদের সম্পর্কে",
+    aboutText:"MeloSync তোমার দিনের সঙ্গে মানানসই গান ও পডকাস্ট খুঁজে পেতে সাহায্য করে। পড়াশোনা, ভ্রমণ, ব্যায়াম, আনন্দ উদযাপন কিংবা বিশ্রামের জন্য পছন্দের সুর আবিষ্কার করো। প্রিয় গান খোঁজো, নতুন শিল্পী ও গল্পের সঙ্গে পরিচিত হও, আর নিজের মুডের সঙ্গে মিলে যায় এমন কিছু বেছে নাও। MeloSync-এর সঙ্গে প্রতিটি মুহূর্তকে আরও স্মরণীয় করে তোলো।",
+    supportTitle:"সাপোর্ট",
+    supportText:"সাহায্য দরকার বা কোনো পরামর্শ আছে? ইমেইলে আমাদের সঙ্গে যোগাযোগ করো।",
+    contactUs:"যোগাযোগ করুন", hqTitle:"MeloSync প্রধান কার্যালয়", followUs:"আমাদের অনুসরণ করো",
+    footerText:"গানপ্রেমীদের জন্য তৈরি।", loginTitle:"আবার স্বাগতম",
+    loginIntro:"MeloSync-এ লগইন করো।", signupTitle:"অ্যাকাউন্ট তৈরি করো",
+    signupIntro:"MeloSync কমিউনিটিতে যোগ দাও।", emailLabel:"ইমেইল",
+    passwordLabel:"পাসওয়ার্ড", nameLabel:"তোমার নাম",
+    demoNote:"এটি ডেমো: এখনো অ্যাকাউন্ট সিস্টেম যুক্ত করা হয়নি।",
+    needAccount:"অ্যাকাউন্ট নেই? সাইন আপ করো",
+    haveAccount:"আগেই অ্যাকাউন্ট আছে? লগইন করো",
+    themeWhite:"☀️ সাদা", themeDark:"🌙 ডার্ক",
+    noSong:"গানের নাম অথবা YouTube ভিডিও লিংক দিন।",
+    invalidUrl:"YouTube লিংকটি চেনা যায়নি। সাধারণ ভিডিও লিংক ব্যবহার করুন।",
+    loginDemo:"এখনো লগইন সিস্টেম যুক্ত করা হয়নি। চালু করতে নিরাপদ authentication service প্রয়োজন।",
+    signupDemo:"এখনো সাইন আপ সিস্টেম যুক্ত করা হয়নি। কোনো অ্যাকাউন্ট তৈরি হয়নি।",
+    searchEmpty:"সার্চ করার জন্য কিছু লিখুন।"
   }
-  previousQuery = clean;
-  playerPanel.classList.add("show");
-  audioBox.classList.remove("show");
-  youtubeFrame.style.display = "none";
-  playerHeading.textContent = "Search YouTube: " + clean;
-  addFallbackLink(clean);
-  setStatus("Your search is ready. Select “Search on YouTube” to see official results and play a song there. Direct live YouTube search inside this page requires a YouTube Data API integration.");
-}
-function addFallbackLink(query) {
-  let old = document.getElementById("youtubeFallback");
-  if (old) old.remove();
-  const link = document.createElement("a");
-  link.id = "youtubeFallback";
-  link.href = "https://www.youtube.com/results?search_query=" + encodeURIComponent(query);
-  link.target = "_blank";
-  link.rel = "noopener noreferrer";
-  link.textContent = "Search on YouTube ↗";
-  link.style.cssText = "display:inline-block;margin-top:10px;color:#1ed760;font-weight:700;font-size:14px";
-  playerHeading.insertAdjacentElement("afterend", link);
-}
-function showAudioMode() {
-  const query = input.value.trim();
-  if (!AUDIO_TRACKS.length) {
-    closePlayer();
-    note.textContent = "Audio-only plays separately authorised audio files, not audio extracted from YouTube. No audio tracks have been added yet.";
-    setStatus("Audio-only is ready for setup. Add a permitted direct audio-file URL to the AUDIO_TRACKS list in this file to enable playback.");
-    return;
-  }
-  const filtered = AUDIO_TRACKS.filter(track =>
-    (track.title + " " + track.artist).toLowerCase().includes(query.toLowerCase())
-  );
-  renderAudioTracks(filtered.length ? filtered : AUDIO_TRACKS);
-}
-function renderAudioTracks(tracks) {
-  playerPanel.classList.add("show");
-  youtubeFrame.style.display = "none";
-  audioBox.classList.add("show");
-  playerHeading.textContent = "Audio-only player";
-  let old = document.getElementById("audioTrackList");
-  if (old) old.remove();
-  const list = document.createElement("div");
-  list.id = "audioTrackList";
-  list.style.cssText = "display:grid;gap:8px;margin-top:12px";
-  tracks.forEach(track => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "play";
-    button.textContent = "▶ " + track.title + " — " + track.artist;
-    button.addEventListener("click", () => {
-      audioPlayer.src = track.url;
-      audioTitle.textContent = track.title;
-      audioPlayer.play().then(() => setStatus("Playing: " + track.title)).catch(() => setStatus("Playback could not start. Check the audio URL and your browser permissions."));
-    });
-    list.appendChild(button);
+};
+
+let language = "en";
+let currentCategory = "all";
+const $ = id => document.getElementById(id);
+
+function translatePage() {
+  document.documentElement.lang = language === "bn" ? "bn" : "en";
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.dataset.i18n;
+    if (translations[language][key]) {
+      el.textContent = translations[language][key];
+    }
   });
-  audioBox.appendChild(list);
-  setStatus("Showing " + tracks.length + " authorised audio track(s). Select one to play.");
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    const key = el.dataset.i18nPlaceholder;
+    if (translations[language][key]) {
+      el.placeholder = translations[language][key];
+    }
+  });
+  $("langBtn").textContent = language === "en" ? "বাংলা" : "English";
+  updateThemeLabel();
 }
+
+function updateThemeLabel() {
+  $("themeBtn").textContent = document.body.classList.contains("light")
+    ? translations[language].themeDark
+    : translations[language].themeWhite;
+}
+
+$("langBtn").addEventListener("click", () => {
+  language = language === "en" ? "bn" : "en";
+  translatePage();
+});
+
+$("themeBtn").addEventListener("click", () => {
+  document.body.classList.toggle("light");
+  updateThemeLabel();
+});
+
+function filterCards() {
+  const term = $("searchInput").value.trim().toLowerCase();
+  let visible = 0;
+
+  document.querySelectorAll(".music-card").forEach(card => {
+    const text = (card.dataset.search + " " + card.innerText).toLowerCase();
+    const matchesCategory = currentCategory === "all" ||
+      card.dataset.category === currentCategory;
+    const matchesSearch = !term || text.includes(term);
+    const show = matchesCategory && matchesSearch;
+    card.classList.toggle("hidden", !show);
+    if (show) visible++;
+  });
+
+  $("noResults").classList.toggle("hidden", visible !== 0);
+}
+
+$("searchBtn").addEventListener("click", () => {
+  filterCards();
+  if (!$("searchInput").value.trim()) {
+    $("searchInput").focus();
+  }
+});
+
+$("searchInput").addEventListener("input", filterCards);
+
 document.querySelectorAll(".tab").forEach(tab => {
   tab.addEventListener("click", () => {
-    currentMode = tab.dataset.mode;
-    document.querySelectorAll(".tab").forEach(item => {
-      const active = item === tab;
-      item.classList.toggle("active", active);
-      item.setAttribute("aria-selected", String(active));
-    });
-    if (currentMode === "youtube") {
-      note.textContent = "Search for a song using YouTube's official search page. Live search inside MeloSync needs a YouTube Data API integration.";
-      setStatus("YouTube mode selected. Search for a song or choose a collection.");
-      if (input.value.trim()) showYouTubeSearch(input.value);
-    } else {
-      note.textContent = "Audio-only mode uses separately authorised audio files. It does not extract or convert audio from YouTube videos.";
-      showAudioMode();
-    }
+    currentCategory = tab.dataset.category;
+    document.querySelectorAll(".tab").forEach(t =>
+      t.classList.toggle("active", t === tab)
+    );
+    filterCards();
   });
 });
-document.getElementById("searchForm").addEventListener("submit", event => {
-  event.preventDefault();
-  const query = input.value.trim();
-  if (!query) {
-    cards.forEach(card => card.style.display = "");
-    document.getElementById("listTitle").textContent = "Explore your mood";
-    document.getElementById("resultCount").textContent = cards.length + " collections";
-    emptyState.style.display = "none";
-    setStatus("Showing all music collections. Type something to search.");
+
+function searchYouTube(query) {
+  const value = query.trim();
+  if (!value) {
+    alert(translations[language].searchEmpty);
     return;
   }
-  const q = query.toLowerCase();
-  let shown = 0;
-  cards.forEach(card => {
-    const match = (card.innerText + " " + card.dataset.search).toLowerCase().includes(q);
-    card.style.display = match ? "" : "none";
-    if (match) shown++;
-  });
-  emptyState.style.display = shown ? "none" : "block";
-  document.getElementById("listTitle").textContent = "Your search";
-  document.getElementById("resultCount").textContent = shown + " collection" + (shown === 1 ? "" : "s");
-  if (currentMode === "youtube") {
-    showYouTubeSearch(query);
-  } else {
-    showAudioMode();
-    if (!AUDIO_TRACKS.length) setStatus("Collections filtered. To play audio-only, add a permitted audio URL to AUDIO_TRACKS in the code.");
-  }
-});
+  window.open(
+    "https://www.youtube.com/results?search_query=" + encodeURIComponent(value),
+    "_blank",
+    "noopener,noreferrer"
+  );
+}
+
 document.querySelectorAll("[data-query]").forEach(button => {
   button.addEventListener("click", () => {
-    input.value = button.dataset.query;
-    if (currentMode === "youtube") {
-      showYouTubeSearch(button.dataset.query);
-    } else {
-      showAudioMode();
-    }
-    playerPanel.scrollIntoView({behavior:"smooth",block:"nearest"});
+    const query = button.dataset.query;
+    $("youtubeInput").value = query;
+    searchYouTube(query);
   });
 });
-document.getElementById("closePlayer").addEventListener("click", () => {
-  closePlayer();
-  const fallback = document.getElementById("youtubeFallback");
-  if (fallback) fallback.remove();
-  setStatus("Player closed. Choose another collection or search for music.");
+
+function getYouTubeId(value) {
+  try {
+    const url = new URL(value);
+    const host = url.hostname.replace(/^www\./, "").toLowerCase();
+    if (host === "youtu.be") {
+      return url.pathname.split("/").filter(Boolean)[0] || null;
+    }
+    if (host === "youtube.com" || host === "m.youtube.com" ||
+        host === "music.youtube.com") {
+      if (url.pathname === "/watch") return url.searchParams.get("v");
+      const parts = url.pathname.split("/").filter(Boolean);
+      if (["embed", "shorts", "live"].includes(parts[0])) return parts[1] || null;
+    }
+  } catch (error) {
+    return null;
+  }
+  return null;
+}
+
+$("youtubeForm").addEventListener("submit", event => {
+  event.preventDefault();
+  const value = $("youtubeInput").value.trim();
+
+  if (!value) {
+    alert(translations[language].noSong);
+    return;
+  }
+
+  const id = getYouTubeId(value);
+  if (id && /^[A-Za-z0-9_-]{11}$/.test(id)) {
+    $("youtubeFrame").src =
+      "https://www.youtube-nocookie.com/embed/" + id;
+    $("youtubePlayer").classList.remove("hidden");
+  } else if (/^https?:\/\//i.test(value)) {
+    alert(translations[language].invalidUrl);
+  } else {
+    searchYouTube(value);
+  }
 });
-audioPlayer.addEventListener("error", () => {
-  setStatus("This audio file could not be played. Check that the URL points directly to an authorised audio file and allows browser playback.");
+
+function openModal(id) {
+  document.querySelectorAll(".modal").forEach(m => m.classList.remove("show"));
+  $(id).classList.add("show");
+}
+
+function closeModal(id) {
+  $(id).classList.remove("show");
+}
+
+$("loginBtn").addEventListener("click", () => openModal("loginModal"));
+$("signupBtn").addEventListener("click", () => openModal("signupModal"));
+
+document.querySelectorAll("[data-close]").forEach(button => {
+  button.addEventListener("click", () => closeModal(button.dataset.close));
 });
+
+document.querySelectorAll(".modal").forEach(modal => {
+  modal.addEventListener("click", event => {
+    if (event.target === modal) closeModal(modal.id);
+  });
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    document.querySelectorAll(".modal").forEach(m => m.classList.remove("show"));
+  }
+});
+
+$("switchToSignup").addEventListener("click", () => openModal("signupModal"));
+$("switchToLogin").addEventListener("click", () => openModal("loginModal"));
+
+$("loginForm").addEventListener("submit", event => {
+  event.preventDefault();
+  $("loginNotice").textContent = translations[language].loginDemo;
+});
+
+$("signupForm").addEventListener("submit", event => {
+  event.preventDefault();
+  $("signupNotice").textContent = translations[language].signupDemo;
+});
+
+$("year").textContent = new Date().getFullYear();
+translatePage();
 </script>
 </body>
 </html>
